@@ -9,7 +9,8 @@ Original file is located at
 
 import streamlit as st
 import pandas as pd
-from sklearn.logistic_model import LogisticRegression
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
 
 # -----------------------------------
 # Page Configuration
@@ -34,17 +35,20 @@ st.dataframe(df)
 # -----------------------------------
 # Train Model
 # -----------------------------------
-X_train, X_test, y_train, y_test = train_test_split(df[['age']],df.bought_insurance,train_size=0.8)
+X = df[['age']]
+y = df['bought_insurance']
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, train_size=0.8, random_state=42
 
 model = LogisticRegression()
-model.fit(X, y)
+model.fit(X_train, y_test)
 
 # -----------------------------------
 # User Input
 # -----------------------------------
 st.subheader("Enter Person Name")
 
-area = st.number_input(
+age = st.number_input(
     "Age (In years )",
     min_value=10,
     max_value=65,
@@ -55,16 +59,18 @@ area = st.number_input(
 # -----------------------------------
 # Prediction
 # -----------------------------------
-if st.button("Predict Age"):
+if st.button("Predict Insurance"):
 
     prediction = model.predict([[age]])
 
-    st.success(f"Predicted Age: {prediction[0]:,.2f}")
+    if prediction[0] == 1:
+        st.success("The person is likely to buy insurance.")
+    else:
+        st.warning("The person is not likely to buy insurance.")
 
 # -----------------------------------
 # Model Information
 # -----------------------------------
 st.subheader("Model Details")
-
-st.write("Coefficient:", model.coef_[0])
-st.write("Intercept:", model.intercept_)
+st.write("Coefficient:", model.coef_[0][0])
+st.write("Intercept:", model.intercept_[0])
