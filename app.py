@@ -10,6 +10,8 @@ Original file is located at
 import pandas as pd
 import streamlit as st
 
+st.set_page_config(page_title="Outlier Detection", layout="wide")
+
 df = pd.read_csv("heights.csv")
 st.dataframe(df.head())
 
