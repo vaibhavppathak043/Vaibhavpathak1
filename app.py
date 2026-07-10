@@ -8,8 +8,9 @@ Original file is located at
 """
 
 import pandas as pd
+import streamlit as st
 
-df = pd.read_csv("/content/sample_data/heights.csv")
+df = pd.read_csv("heights.csv")
 df.head()
 
 """<h3 style='color:purple'>Detect outliers using percentile</h3>"""
@@ -30,7 +31,7 @@ df[(df['height']<max_thresold) & (df['height']>min_thresold)]
 
 """<h3 style='color:purple'>Now lets explore banglore property prices dataset</h3>"""
 
-df = pd.read_csv("/content/sample_data/bhp.csv")
+df = pd.read_csv("bhp.csv")
 df.head()
 
 df.shape
