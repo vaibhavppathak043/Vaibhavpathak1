@@ -15,20 +15,21 @@ st.dataframe(df.head())
 
 st.subheader("Detect Outliers Using Percentiles")
 
-max_threshold = df['height'].quantile(0.95)
+max_threshold = df["height"].quantile(0.95)
+min_threshold = df["height"].quantile(0.05)
+
 st.write(max_threshold)
-
-st.dataframe(df[df['height'] > max_threshold])
-
-min_thresold = df['height'].quantile(0.05)
 st.write(min_threshold)
 
-st.dataframe(df[df['height'] < min_threshold])
+st.dataframe(df[df["height"] > max_threshold])
+st.dataframe(df[df["height"] < min_threshold])
 
-"""<h3 style='color:purple'>Remove outliers</h3>"""
+filtered_df = df[
+    (df["height"] < max_threshold) &
+    (df["height"] > min_threshold)
+]
 
-df[(df['height']<max_thresold) & (df['height']>min_thresold)]
-
+st.dataframe(filtered_df)
 """<h3 style='color:purple'>Now lets explore banglore property prices dataset</h3>"""
 
 df = pd.read_csv("bhp.csv")
@@ -39,16 +40,17 @@ st.write(df.shape)
 st.dataframe(df.describe())
 """**Explore samples that are above 99.90% percentile and below 1% percentile rank**"""
 
-min_thresold, max_thresold = df.price_per_sqft.quantile([0.001, 0.999])
-min_thresold, max_thresold
+min_threshold, max_threshold = df.price_per_sqft.quantile([0.001, 0.999])
 
-df[df.price_per_sqft < min_thresold]
+st.write("Minimum Threshold:", min_threshold)
+st.write("Maximum Threshold:", max_threshold)
 
-df[df.price_per_sqft > max_thresold]
+st.dataframe(df[df.price_per_sqft < min_threshold])
+st.dataframe(df[df.price_per_sqft > max_threshold])
 
 """<h3 style='color:purple'>Remove outliers</h3>"""
 
-df2 = df[(df.price_per_sqft<max_thresold) & (df.price_per_sqft>min_thresold)]
+df2 = df[(df.price_per_sqft<max_threshold) & (df.price_per_sqft>min_threshold)]
 st.write(df2.shape)
 
 st.dataframe(df2.describe())
