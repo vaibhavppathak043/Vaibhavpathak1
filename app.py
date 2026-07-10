@@ -11,19 +11,19 @@ import pandas as pd
 import streamlit as st
 
 df = pd.read_csv("heights.csv")
-df.head()
+st.dataframe(df.head())
 
-"""<h3 style='color:purple'>Detect outliers using percentile</h3>"""
+st.subheader("Detect Outliers Using Percentiles")
 
-max_thresold = df['height'].quantile(0.95)
-max_thresold
+max_threshold = df['height'].quantile(0.95)
+st.write(max_threshold)
 
-df[df['height']>max_thresold]
+st.dataframe(df[df['height'] > max_threshold])
 
 min_thresold = df['height'].quantile(0.05)
-min_thresold
+st.write(min_threshold)
 
-df[df['height']<min_thresold]
+st.dataframe(df[df['height'] < min_threshold])
 
 """<h3 style='color:purple'>Remove outliers</h3>"""
 
@@ -32,12 +32,11 @@ df[(df['height']<max_thresold) & (df['height']>min_thresold)]
 """<h3 style='color:purple'>Now lets explore banglore property prices dataset</h3>"""
 
 df = pd.read_csv("bhp.csv")
-df.head()
+st.dataframe(df.head())
 
-df.shape
+st.write(df.shape)
 
-df.describe()
-
+st.dataframe(df.describe())
 """**Explore samples that are above 99.90% percentile and below 1% percentile rank**"""
 
 min_thresold, max_thresold = df.price_per_sqft.quantile([0.001, 0.999])
@@ -50,10 +49,9 @@ df[df.price_per_sqft > max_thresold]
 """<h3 style='color:purple'>Remove outliers</h3>"""
 
 df2 = df[(df.price_per_sqft<max_thresold) & (df.price_per_sqft>min_thresold)]
-df2.shape
+st.write(df2.shape)
 
-df2.describe()
-
+st.dataframe(df2.describe())
 """<h3 style='color:purple'>Exercise</h3>
 
 Use this air bnb new york city [data set](https://www.kaggle.com/dgomonov/new-york-city-airbnb-open-data/data) and remove outliers using percentile based on price per night for a given apartment/home. You can use suitable upper and lower limits on percentile based on your intuition.
